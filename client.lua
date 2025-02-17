@@ -18,9 +18,44 @@ RegisterCommand(Config.Command, function(source, args, raw)
         return
     end
 
-    if playerData.job.name == 'police' and vehicle then
-        local options = {}
-        
+    if not Config.ForEveryone then
+        for _, job in pairs(Config.Jobs) do 
+            if playerData.job.name == job and vehicle then
+                local options = {}
+                
+                for modName, modIndex in pairs(Config.ModTypes) do
+                    local modCount = GetNumVehicleMods(vehicle, modIndex)
+                    if modCount > 0 then
+                        table.insert(options, {
+                            label = modName .. " (" .. modCount .. " mods available)",
+                            description = "Select to modify",
+                            args = {
+                                modName = modName,
+                                modCount = modCount,
+                                modType = modIndex
+                            }
+                        })
+                    end
+                end
+
+                if Config.MenuType == 'ox_lib' then
+                    lib.registerMenu({
+                        id = 'modkits_menu',
+                        title = 'Vehicle Modkits',
+                        position = 'top-right',
+                        options = options
+                    }, function(selected, _, args)
+                        TriggerEvent("pd_modkits:client:ModMenu", args)
+                    end)
+
+                    lib.showMenu('modkits_menu')
+                else
+                    exports['qb-menu']:openMenu(options)
+                end
+            end
+        end
+    else
+        local options = {}     
         for modName, modIndex in pairs(Config.ModTypes) do
             local modCount = GetNumVehicleMods(vehicle, modIndex)
             if modCount > 0 then
@@ -45,7 +80,6 @@ RegisterCommand(Config.Command, function(source, args, raw)
             }, function(selected, _, args)
                 TriggerEvent("pd_modkits:client:ModMenu", args)
             end)
-
             lib.showMenu('modkits_menu')
         else
             exports['qb-menu']:openMenu(options)

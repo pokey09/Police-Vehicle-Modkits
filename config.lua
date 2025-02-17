@@ -4,6 +4,12 @@ Config.MenuType = 'ox_lib' -- qb or ox_lib (IF OX Uncomment in fxmanifest)
 Config.NotifyType = 'qb' -- qb or ox_lib (IF OX Uncomment in fxmanifest)
 Config.Command = 'modkits'
 
+Config.ForEveryone = false
+Config.Jobs = {
+	'police',
+	'ambulance'
+}
+
 Config.ModTypes = {
 	Spoiler = 0,
 	Bumper_f = 1,
