@@ -2,7 +2,7 @@ local QBCore = exports['qb-core']:GetCoreObject()
 
 RegisterCommand(Config.Command, function(source, args, raw)
     local playerData = QBCore.Functions.GetPlayerData()
-    local playerPed = PlayerPedId()
+    local playerPed = PlayerPedId(-1)
     local vehicle = GetVehiclePedIsIn(playerPed, false)
 
     if not vehicle or vehicle == 0 then
