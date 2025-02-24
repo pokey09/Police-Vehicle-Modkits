@@ -1,7 +1,7 @@
 Config = {}
 
 Config.MenuType = 'ox_lib' -- qb or ox_lib (IF OX Uncomment in fxmanifest)
-Config.NotifyType = 'qb' -- qb or ox_lib (IF OX Uncomment in fxmanifest)
+Config.NotifyType = 'ox_lib' -- qb or ox_lib (IF OX Uncomment in fxmanifest)
 Config.Command = 'modkits'
 
 Config.ForEveryone = false
