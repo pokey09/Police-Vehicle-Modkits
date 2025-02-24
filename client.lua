@@ -2,7 +2,7 @@ local QBCore = exports['qb-core']:GetCoreObject()
 
 RegisterCommand(Config.Command, function(source, args, raw)
     local playerData = QBCore.Functions.GetPlayerData()
-    local playerPed = PlayerPedId(-1)
+    local playerPed = GetPlayerPed(-1)
     local vehicle = GetVehiclePedIsIn(playerPed, false)
 
     if not vehicle or vehicle == 0 then
@@ -10,7 +10,7 @@ RegisterCommand(Config.Command, function(source, args, raw)
             lib.notify({
                 title = "You're not in a vehicle!",
                 description = '',
-                type = 'success'
+                type = 'error'
             })
         else
             QBCore.Functions.Notify("You're not in a vehicle!", "error")
@@ -19,10 +19,9 @@ RegisterCommand(Config.Command, function(source, args, raw)
     end
 
     if not Config.ForEveryone then
-        for _, job in pairs(Config.Jobs) do 
+        for _, job in pairs(Config.Jobs) do
             if playerData.job.name == job and vehicle then
                 local options = {}
-                
                 for modName, modIndex in pairs(Config.ModTypes) do
                     local modCount = GetNumVehicleMods(vehicle, modIndex)
                     if modCount > 0 then
@@ -35,27 +34,27 @@ RegisterCommand(Config.Command, function(source, args, raw)
                                 modType = modIndex
                             }
                         })
+
+                        if Config.MenuType == 'ox_lib' then
+                            lib.registerMenu({
+                                id = 'modkits_menu',
+                                title = 'Vehicle Modkits',
+                                position = 'top-right',
+                                options = options
+                            }, function(selected, _, args)
+                                TriggerEvent("pd_modkits:client:ModMenu", args)
+                            end)
+
+                            lib.showMenu('modkits_menu')
+                        else
+                            exports['qb-menu']:openMenu(options)
+                        end
                     end
-                end
-
-                if Config.MenuType == 'ox_lib' then
-                    lib.registerMenu({
-                        id = 'modkits_menu',
-                        title = 'Vehicle Modkits',
-                        position = 'top-right',
-                        options = options
-                    }, function(selected, _, args)
-                        TriggerEvent("pd_modkits:client:ModMenu", args)
-                    end)
-
-                    lib.showMenu('modkits_menu')
-                else
-                    exports['qb-menu']:openMenu(options)
                 end
             end
         end
     else
-        local options = {}     
+        local options = {} 
         for modName, modIndex in pairs(Config.ModTypes) do
             local modCount = GetNumVehicleMods(vehicle, modIndex)
             if modCount > 0 then
@@ -68,21 +67,21 @@ RegisterCommand(Config.Command, function(source, args, raw)
                         modType = modIndex
                     }
                 })
-            end
-        end
 
-        if Config.MenuType == 'ox_lib' then
-            lib.registerMenu({
-                id = 'modkits_menu',
-                title = 'Vehicle Modkits',
-                position = 'top-right',
-                options = options
-            }, function(selected, _, args)
-                TriggerEvent("pd_modkits:client:ModMenu", args)
-            end)
-            lib.showMenu('modkits_menu')
-        else
-            exports['qb-menu']:openMenu(options)
+                if Config.MenuType == 'ox_lib' then
+                    lib.registerMenu({
+                        id = 'modkits_menu',
+                        title = 'Vehicle Modkits',
+                        position = 'top-right',
+                        options = options
+                    }, function(selected, _, args)
+                        TriggerEvent("pd_modkits:client:ModMenu", args)
+                    end)
+                    lib.showMenu('modkits_menu')
+                else
+                    exports['qb-menu']:openMenu(options)
+                end
+            end
         end
     end
 end)
@@ -131,7 +130,7 @@ RegisterNetEvent('pd_modkits:client:ModMenu', function(data)
 end)
 
 RegisterNetEvent('pd_modkits:client:setModkits', function(data)
-    local playerPed = PlayerPedId()
+    local playerPed = GetPlayerPed(-1)
     local vehicle = GetVehiclePedIsIn(playerPed, false)
     
     if vehicle and vehicle ~= 0 then
