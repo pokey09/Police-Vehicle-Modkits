@@ -59,6 +59,7 @@ RegisterCommand(Config.Command, function(source, args, raw)
                         else
                             QBCore.Functions.Notify("Vehicle doesnt have modkits!", "error")
                         end
+                        break;
                     end
                 end
             end
@@ -101,6 +102,7 @@ RegisterCommand(Config.Command, function(source, args, raw)
                 else
                     QBCore.Functions.Notify("Vehicle doesnt have modkits!", "error")
                 end
+                break;
             end
         end
     end
