@@ -49,6 +49,16 @@ RegisterCommand(Config.Command, function(source, args, raw)
                         else
                             exports['qb-menu']:openMenu(options)
                         end
+                    else
+                        if Config.NotifyType == 'ox_lib' then
+                            lib.notify({
+                                title = "Vehicle doesnt have modkits!",
+                                description = '',
+                                type = 'error'
+                            })
+                        else
+                            QBCore.Functions.Notify("Vehicle doesnt have modkits!", "error")
+                        end
                     end
                 end
             end
@@ -80,6 +90,16 @@ RegisterCommand(Config.Command, function(source, args, raw)
                     lib.showMenu('modkits_menu')
                 else
                     exports['qb-menu']:openMenu(options)
+                end
+            else
+                if Config.NotifyType == 'ox_lib' then
+                    lib.notify({
+                        title = "Vehicle doesnt have modkits!",
+                        description = '',
+                        type = 'error'
+                    })
+                else
+                    QBCore.Functions.Notify("Vehicle doesnt have modkits!", "error")
                 end
             end
         end
